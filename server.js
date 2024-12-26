@@ -25,76 +25,77 @@ app.get('/webhook', (req, res) => res.send('Bot is up and running!'));
 // Welcome and menu handler
 app.post('/webhook', async (req, res) => {
   console.log("body",req.body);
-  const { From, Body } = req.body;
-  const userNumber = From.replace('whatsapp:', '').trim();
+  // const { From, Body } = req.body;
+  // const userNumber = From.replace('whatsapp:', '').trim();
 
-  if (!userSessions[userNumber]) {
-    userSessions[userNumber] = { stage: 'welcome' };
-    return sendMessage(userNumber, 'Welcome to our shop! Type "menu" to see the product list.');
-  }
+  // if (!userSessions[userNumber]) {
+  //   userSessions[userNumber] = { stage: 'welcome' };
+  //   return sendMessage(userNumber, 'Welcome to our shop! Type "menu" to see the product list.');
+  // }
 
-  const session = userSessions[userNumber];
+  // const session = userSessions[userNumber];
 
-  if (Body.toLowerCase() === 'menu') {
-    session.stage = 'ordering';
-    return sendMessage(
-      userNumber,
-      'Here is our menu:\n1. Product A - $10\n2. Product B - $15\n3. Product C - $20\nReply with the product name to order.'
-    );
-  }
+  // if (Body.toLowerCase() === 'menu') {
+  //   session.stage = 'ordering';
+  //   return sendMessage(
+  //     userNumber,
+  //     'Here is our menu:\n1. Product A - $10\n2. Product B - $15\n3. Product C - $20\nReply with the product name to order.'
+  //   );
+  // }
 
-  if (session.stage === 'ordering') {
-    session.product = Body.trim();
-    session.stage = 'quantity';
-    return sendMessage(userNumber, 'How many units would you like to order?');
-  }
+  // if (session.stage === 'ordering') {
+  //   session.product = Body.trim();
+  //   session.stage = 'quantity';
+  //   return sendMessage(userNumber, 'How many units would you like to order?');
+  // }
 
-  if (session.stage === 'quantity') {
-    session.quantity = parseInt(Body.trim(), 10);
-    if (isNaN(session.quantity)) {
-      return sendMessage(userNumber, 'Please enter a valid quantity.');
-    }
-    session.stage = 'address';
-    return sendMessage(userNumber, 'Please provide your delivery address.');
-  }
+  // if (session.stage === 'quantity') {
+  //   session.quantity = parseInt(Body.trim(), 10);
+  //   if (isNaN(session.quantity)) {
+  //     return sendMessage(userNumber, 'Please enter a valid quantity.');
+  //   }
+  //   session.stage = 'address';
+  //   return sendMessage(userNumber, 'Please provide your delivery address.');
+  // }
 
-  if (session.stage === 'address') {
-    session.address = Body.trim();
-    session.totalPrice = session.quantity * (session.product === 'Product A' ? 10 : session.product === 'Product B' ? 15 : 20);
-    session.stage = 'confirmation';
+  // if (session.stage === 'address') {
+  //   session.address = Body.trim();
+  //   session.totalPrice = session.quantity * (session.product === 'Product A' ? 10 : session.product === 'Product B' ? 15 : 20);
+  //   session.stage = 'confirmation';
 
-    return sendMessage(
-      userNumber,
-      `Order Summary:\nProduct: ${session.product}\nQuantity: ${session.quantity}\nAddress: ${session.address}\nTotal Price: $${session.totalPrice}\n\nReply "confirm" to place your order.`
-    );
-  }
+  //   return sendMessage(
+  //     userNumber,
+  //     `Order Summary:\nProduct: ${session.product}\nQuantity: ${session.quantity}\nAddress: ${session.address}\nTotal Price: $${session.totalPrice}\n\nReply "confirm" to place your order.`
+  //   );
+  // }
 
-  if (session.stage === 'confirmation' && Body.toLowerCase() === 'confirm') {
-    const order = new Order({
-      product: session.product,
-      quantity: session.quantity,
-      address: session.address,
-      totalPrice: session.totalPrice,
-      confirmed: true,
-    });
+  // if (session.stage === 'confirmation' && Body.toLowerCase() === 'confirm') {
+  //   const order = new Order({
+  //     product: session.product,
+  //     quantity: session.quantity,
+  //     address: session.address,
+  //     totalPrice: session.totalPrice,
+  //     confirmed: true,
+  //   });
 
-    await order.save();
+  //   await order.save();
 
-    delete userSessions[userNumber];
-    return sendMessage(userNumber, 'Thank you! Your order has been placed successfully.');
-  }
+  //   delete userSessions[userNumber];
+  //   return sendMessage(userNumber, 'Thank you! Your order has been placed successfully.');
+  // }
 
-  return sendMessage(userNumber, 'Invalid response. Please follow the instructions.');
+  return sendMessage("+917418800609", 'mari');
 });
 
 // Helper to send WhatsApp messages
 function sendMessage(to, message) {
   return client.messages.create({
-    from: `whatsapp:${process.env.TWILIO_PHONE_NUMBER}`,
+    from: `whatsapp:+14155238886`,
     to: `whatsapp:${to}`,
     body: message,
   });
 }
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
