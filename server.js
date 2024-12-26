@@ -24,6 +24,7 @@ app.get('/webhook', (req, res) => res.send('Bot is up and running!'));
 
 // Welcome and menu handler
 app.post('/webhook', async (req, res) => {
+  console.log("body",req.body);
   const { From, Body } = req.body;
   const userNumber = From.replace('whatsapp:', '').trim();
 
